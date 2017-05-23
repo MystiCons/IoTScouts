@@ -6,22 +6,27 @@ import os
 import time
 import sys
 import threading
+import netifaces as ni
 
 sense = SenseHat()
+
+red = (255, 0, 0)
+green = (0, 255, 0)
 
 print("Waiting for internet access...")
 start = time.time()
 end = time.time()
 while end-start < 30:
-    sense.show_message("Connecting...")
+    sense.show_message("Connecting...", text_colour=red)
     end = time.time()
-sense.show_message(" OK ")
+sense.show_message(" OK ", text_colour=green)
+
 
 THINGSBOARD_HOST = '192.168.51.140'
-ACCESS_TOKEN = 'xVHfHnL72zDiTFy3Txri'
+ACCESS_TOKEN = 'jxMm1OoiyxipoVRubFWM'
 
 # Data capture and upload interval in seconds. Less interval will eventually hang the DHT22.
-INTERVAL=60
+INTERVAL=30
 
 sensor_data = {'temperature': 0, 'humidity': 0}
 
@@ -37,10 +42,19 @@ client.connect(THINGSBOARD_HOST, 1883, 60)
 
 client.loop_start()
 
+ip_address = {'ip': 0}
 
+ni.ifaddresses('wlan0')
+ip = ni.ifaddresses('wlan0')[2][0]['addr']
+print(ip)
+ip_address['ip'] = ip
+# Sending IP address
+client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
 
 try:
     while True:
+	
+        sense.show_message("Data")
 
         humidity = round(sense.get_humidity(), 2)
         temperature = round(sense.get_temperature(), 2)
