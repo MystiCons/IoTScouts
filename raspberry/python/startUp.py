@@ -16,6 +16,7 @@ def worker():
     while end-start < 30:
         sense.show_message("Waiting...")
         end = time.time()
+    sense.show_message("OK")
   
 t = threading.Thread(target=worker)
 t.start()
@@ -24,7 +25,7 @@ print("Waiting for internet access...")
 time.sleep(30)
 
 
-THINGSBOARD_HOST = '192.168.51.158'
+THINGSBOARD_HOST = '192.168.51.140'
 ACCESS_TOKEN = 'xVHfHnL72zDiTFy3Txri'
 
 # Data capture and upload interval in seconds. Less interval will eventually hang the DHT22.
