@@ -13,9 +13,9 @@ print("Waiting for internet access...")
 start = time.time()
 end = time.time()
 while end-start < 30:
-    sense.show_message("Waiting...")
+    sense.show_message("Connecting...")
     end = time.time()
-sense.show_message("OK")
+sense.show_message(" OK ")
 
 THINGSBOARD_HOST = '192.168.51.140'
 ACCESS_TOKEN = 'xVHfHnL72zDiTFy3Txri'
