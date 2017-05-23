@@ -12,7 +12,6 @@ sense = SenseHat()
 print("Waiting for internet access...")
 start = time.time()
 end = time.time()
-global sense
 while end-start < 30:
     sense.show_message("Waiting...")
     end = time.time()
