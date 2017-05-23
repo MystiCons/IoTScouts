@@ -9,12 +9,6 @@ import threading
 
 sense = SenseHat()
 
-t = threading.Thread(target=worker)
-t.start()
-
-print("Waiting for internet access...")
-time.sleep(30)
-
 def worker():
     start = time.time()
     end = time.time()
@@ -22,6 +16,13 @@ def worker():
     while end-start < 30:
         sense.show_message("Waiting...")
         end = time.time()
+  
+t = threading.Thread(target=worker)
+t.start()
+
+print("Waiting for internet access...")
+time.sleep(30)
+
 
 THINGSBOARD_HOST = '192.168.51.158'
 ACCESS_TOKEN = 'xVHfHnL72zDiTFy3Txri'
