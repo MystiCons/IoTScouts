@@ -10,6 +10,25 @@ import netifaces as ni
 
 sense = SenseHat()
 
+def printPixels():
+  X = [255, 0, 0]  # Red
+  O = [0, 0, 0] # White
+
+  pixel_fin = [
+  O, O, O, O, O, O, O, O,
+  O, O, O, O, O, O, O, O,
+  O, O, X, O, O, X, O, O,
+  O, O, O, O, O, O, O, O,
+  O, X, O, O, O, O, X, O,
+  O, O, X, O, O, X, O, O,
+  O, O, O, X, X, O, O, O,
+  O, O, O, O, O, O, O, O
+  ]
+  sense.set_pixels(pixel_fin)
+  time.sleep(2)
+  sense.clear()
+
+
 red = (255, 0, 0)
 green = (0, 255, 0)
 
