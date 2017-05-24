@@ -11,23 +11,22 @@ import netifaces as ni
 sense = SenseHat()
 
 def printPixels():
-  X = [255, 0, 0]  # Red
+  X = [0, 255, 0]  # Green
   O = [0, 0, 0] # White
 
   pixel_fin = [
+  X, O, O, O, O, O, O, X,
   O, O, O, O, O, O, O, O,
   O, O, O, O, O, O, O, O,
-  O, O, X, O, O, X, O, O,
-  O, O, O, O, O, O, O, O,
-  O, X, O, O, O, O, X, O,
-  O, O, X, O, O, X, O, O,
   O, O, O, X, X, O, O, O,
-  O, O, O, O, O, O, O, O
+  O, O, O, X, X, O, O, O,
+  O, O, O, O, O, O, O, O,
+  O, O, O, O, O, O, O, O,
+  X, O, O, O, O, O, O, X
   ]
   sense.set_pixels(pixel_fin)
   time.sleep(2)
   sense.clear()
-
 
 red = (255, 0, 0)
 green = (0, 255, 0)
@@ -47,7 +46,7 @@ ACCESS_TOKEN = 'CE6CaB6wLYCVO8b7FwXL' # This must be changed
 # Data capture and upload interval in seconds. Less interval will eventually hang the DHT22.
 INTERVAL=30
 
-sensor_data = {'temperature': 0, 'humidity': 0}
+sensor_data = {'temperature': 0, 'humidity': 0, 'air_pressure: 0'}
 
 next_reading = time.time() 
 
@@ -80,14 +79,14 @@ def getIp():
 try:
   count = 0
   while True:
-
-    sense.show_message("Data")
-
+    printPixels()
     humidity = round(sense.get_humidity(), 2)
     temperature = round(sense.get_temperature(), 2)
-    print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%".format(temperature, humidity))
+    air_pressure = round(sense.get_pressure(), 2)
+    print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%, Pressure: {}hpa".format(temperature, humidity, air_pressure))
     sensor_data['temperature'] = temperature
     sensor_data['humidity'] = humidity
+    sensor_data['air_pressure'] = air_pressure
 
     # Sending humidity and temperature data to Thingsboard
     client.publish('v1/devices/me/telemetry', json.dumps(sensor_data), 1)
