@@ -17,13 +17,13 @@ print("Waiting for internet access...")
 start = time.time()
 end = time.time()
 while end-start < 30:
-    sense.show_message("Connecting...", text_colour=red)
-    end = time.time()
+	sense.show_message("Connecting...", text_colour=red)
+	end = time.time()
 sense.show_message(" OK ", text_colour=green)
 
 
 THINGSBOARD_HOST = '192.168.51.140'
-ACCESS_TOKEN = 'jxMm1OoiyxipoVRubFWM'
+ACCESS_TOKEN = 'CE6CaB6wLYCVO8b7FwXL' # This must be changed
 
 # Data capture and upload interval in seconds. Less interval will eventually hang the DHT22.
 INTERVAL=30
@@ -59,32 +59,32 @@ def getIp():
 	client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
 
 try:
-    count = 0
-    while True:
+	count = 0
+	while True:
 	
-        sense.show_message("Data")
+        	sense.show_message("Data")
 
-        humidity = round(sense.get_humidity(), 2)
-        temperature = round(sense.get_temperature(), 2)
-        print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%".format(temperature, humidity))
-        sensor_data['temperature'] = temperature
-        sensor_data['humidity'] = humidity
+	        humidity = round(sense.get_humidity(), 2)
+	        temperature = round(sense.get_temperature(), 2)
+        	print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%".format(temperature, humidity))
+	        sensor_data['temperature'] = temperature
+        	sensor_data['humidity'] = humidity
 
-        # Sending humidity and temperature data to Thingsboard
-        client.publish('v1/devices/me/telemetry', json.dumps(sensor_data), 1)
+	        # Sending humidity and temperature data to Thingsboard
+	        client.publish('v1/devices/me/telemetry', json.dumps(sensor_data), 1)
 
-        next_reading += INTERVAL
-        sleep_time = next_reading-time.time()
+        	next_reading += INTERVAL
+	        sleep_time = next_reading-time.time()
 	
-	count += 1
-	if count > 10:
-		getIp()
-		count = 0
+		count += 1
+		if count > 10:
+			getIp()
+			count = 0
 	
-        if sleep_time > 0:
-            time.sleep(sleep_time)
+        	if sleep_time > 0:
+            	time.sleep(sleep_time)
 except KeyboardInterrupt:
-    pass
+	pass
 
 client.loop_stop()
 client.disconnect()
