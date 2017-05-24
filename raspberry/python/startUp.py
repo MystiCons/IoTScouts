@@ -44,14 +44,22 @@ client.loop_start()
 
 ip_address = {'ip': 0}
 
-ni.ifaddresses('wlan0')
-ip = ni.ifaddresses('wlan0')[2][0]['addr']
-print(ip)
-ip_address['ip'] = ip
-# Sending IP address
-client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
+def getIp():
+	# Try to get wlan0, otherwise eth0
+	try:
+		ni.ifaddresses('wlan0')
+		ip = ni.ifaddresses('wlan0')[2][0]['addr']
+	except:
+		ni.ifaddresses('eth0')
+		ip = ni.ifaddresses('eth0')[2][0]['addr']
+	print(ip)
+	ip_address['ip'] = ip
+
+	# Sending IP address
+	client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
 
 try:
+    count = 0
     while True:
 	
         sense.show_message("Data")
@@ -67,6 +75,12 @@ try:
 
         next_reading += INTERVAL
         sleep_time = next_reading-time.time()
+	
+	count += 1
+	if count > 10:
+		getIp()
+		count = 0
+	
         if sleep_time > 0:
             time.sleep(sleep_time)
 except KeyboardInterrupt:
