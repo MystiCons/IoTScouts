@@ -17,8 +17,8 @@ print("Waiting for internet access...")
 start = time.time()
 end = time.time()
 while end-start < 30:
-	sense.show_message("Connecting...", text_colour=red)
-	end = time.time()
+  sense.show_message("Connecting...", text_colour=red)
+  end = time.time()
 sense.show_message(" OK ", text_colour=green)
 
 
@@ -45,46 +45,46 @@ client.loop_start()
 ip_address = {'ip': 0}
 
 def getIp():
-	# Try to get wlan0, otherwise eth0
-	try:
-		ni.ifaddresses('wlan0')
-		ip = ni.ifaddresses('wlan0')[2][0]['addr']
-	except:
-		ni.ifaddresses('eth0')
-		ip = ni.ifaddresses('eth0')[2][0]['addr']
-	print(ip)
-	ip_address['ip'] = ip
+# Try to get wlan0, otherwise eth0
+  try:
+    ni.ifaddresses('wlan0')
+    ip = ni.ifaddresses('wlan0')[2][0]['addr']
+  except:
+    ni.ifaddresses('eth0')
+    ip = ni.ifaddresses('eth0')[2][0]['addr']
+  print(ip)
+  ip_address['ip'] = ip
 
-	# Sending IP address
-	client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
+  # Sending IP address
+  client.publish('v1/devices/me/attributes', json.dumps(ip_address), 1)
 
 try:
-	count = 0
-	while True:
-	
-        	sense.show_message("Data")
+  count = 0
+  while True:
 
-	        humidity = round(sense.get_humidity(), 2)
-	        temperature = round(sense.get_temperature(), 2)
-        	print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%".format(temperature, humidity))
-	        sensor_data['temperature'] = temperature
-        	sensor_data['humidity'] = humidity
+    sense.show_message("Data")
 
-	        # Sending humidity and temperature data to Thingsboard
-	        client.publish('v1/devices/me/telemetry', json.dumps(sensor_data), 1)
+    humidity = round(sense.get_humidity(), 2)
+    temperature = round(sense.get_temperature(), 2)
+    print(u"Temperature: {:g}\u00b0C, Humidity: {:g}%".format(temperature, humidity))
+    sensor_data['temperature'] = temperature
+    sensor_data['humidity'] = humidity
 
-        	next_reading += INTERVAL
-	        sleep_time = next_reading-time.time()
-	
-		count += 1
-		if count > 10:
-			getIp()
-			count = 0
-	
-        	if sleep_time > 0:
-            	time.sleep(sleep_time)
+    # Sending humidity and temperature data to Thingsboard
+    client.publish('v1/devices/me/telemetry', json.dumps(sensor_data), 1)
+
+    next_reading += INTERVAL
+    sleep_time = next_reading-time.time()
+
+    count += 1
+    if count > 10:
+      getIp()
+      count = 0
+
+    if sleep_time > 0:
+      time.sleep(sleep_time)
 except KeyboardInterrupt:
-	pass
+  pass
 
 client.loop_stop()
 client.disconnect()
