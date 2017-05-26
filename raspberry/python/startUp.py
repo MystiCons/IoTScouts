@@ -64,6 +64,7 @@ ip_address = {'ip': 0}
 
 def getIp():
 # Try to get wlan0, otherwise eth0
+  global client
   try:
     ni.ifaddresses('wlan0')
     ip = ni.ifaddresses('wlan0')[2][0]['addr']
