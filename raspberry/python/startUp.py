@@ -46,7 +46,7 @@ ACCESS_TOKEN = 'CE6CaB6wLYCVO8b7FwXL' # This must be changed
 # Data capture and upload interval in seconds. Less interval will eventually hang the DHT22.
 INTERVAL=30
 
-sensor_data = {'temperature': 0, 'humidity': 0, 'air_pressure: 0'}
+sensor_data = {'temperature': 0, 'humidity': 0, 'air_pressure': 0}
 
 next_reading = time.time() 
 
